@@ -113,31 +113,6 @@ public class DynamicSearch {
         }
     }
 
-    private void setParameters(Query query, Grupa grupa) {
-        for(Field f : grupa.getClass().getDeclaredFields()) {
-            f.setAccessible(true);
-
-            Object field_value = null;
-            try {
-                field_value = f.get(grupa);
-            } catch (IllegalArgumentException | IllegalAccessException ex) {}
-
-            if(field_value == null)  continue;
-
-            String field_name = f.getName();
-            String attr_type = f.getType().getName();
-            attr_type = attr_type.substring(attr_type.lastIndexOf(".")+1);
-
-            if(attr_type.equals("String"))
-                field_value = "%"+field_value.toString()+"%";
-            query.setParameter(field_name, field_value);
-            logger.info("query.setParameter("+field_name+","+field_value+")");
-            f.setAccessible(false);
-        }
-    }
-
-
-
     private String buildQueryGeneral(Object searchObject) {
         String searchClass = searchObject.getClass().getSimpleName();
         String searchClassAlias = searchClass.substring(0, 1);
@@ -183,13 +158,7 @@ public class DynamicSearch {
             if(field_value == null)  continue;
 
             String field_name = f.getName();
-//            String attr_type = f.getType().getName();
-//            attr_type = attr_type.substring(attr_type.lastIndexOf(".")+1);
-
-//            if(attr_type.equals("String"))
-//                field_value = "%"+field_value.toString()+"%";
             query.setParameter(field_name, field_value);
-            logger.info("query.setParameter("+field_name+","+field_value+")");
             f.setAccessible(false);
         }
     }
