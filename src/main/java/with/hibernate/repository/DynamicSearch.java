@@ -18,11 +18,8 @@ public class DynamicSearch {
 
     Logger logger = Logger.getLogger(DynamicSearch.class.getName());
 
-//    @PersistenceContext
     @Autowired
     private EntityManager entityManager;
-
-//    private final Field[] groupFileds = Grupa.class.getDeclaredFields();
 
 
     public List<Grupa> getDynamicGroups(Grupa grupa) {
@@ -159,6 +156,7 @@ public class DynamicSearch {
 
             String field_name = f.getName();
             query.setParameter(field_name, field_value);
+            logger.info("query.setParameter("+field_name+","+field_value+")");
             f.setAccessible(false);
         }
     }
